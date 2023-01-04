@@ -1,13 +1,11 @@
 {
-    "name": "Lab5Games.ScheduleSystem",
-    "rootNamespace": "Lab5Games.Schedules",
-    "references": [],
+    "name": "Lab5Games.Schedules.Editor",
+    "rootNamespace": "Lab5Games.Schedules.Editor",
+    "references": [
+        "GUID:d65ef35ccebab9d4090367d3d0ef73d9"
+    ],
     "includePlatforms": [
-        "Android",
-        "Editor",
-        "iOS",
-        "WindowsStandalone32",
-        "WindowsStandalone64"
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

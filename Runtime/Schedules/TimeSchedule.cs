@@ -39,8 +39,8 @@ namespace Lab5Games.Schedules
 
         public void OnCompleted(Action continuation)
         {
-            onCancel += (x) => { continuation(); };
-            onComplete += (x) => { continuation(); };
+            onCancel += x => continuation();
+            onComplete += x => continuation();
         }
 
         public TimeSchedule GetAwaiter()

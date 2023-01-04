@@ -29,16 +29,14 @@ namespace Lab5Games.Schedules
             m_routine = routine;
         }
 
-        public override void Start()
+        protected override void OnStart()
         {
-            base.Start();
-            
             m_coroutine = ScheduleSystem.ProxyStartCoroutine(Routine());
         }
 
         public override void Complete()
         {
-            Debug.LogWarning("[CoroutineSchedule] This operation is invalid");
+            Debug.LogWarning("[CoroutineSchedule] This operation is invalid!");
         }
 
         public override void Cancel()

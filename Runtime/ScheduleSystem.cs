@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 namespace Lab5Games.Schedules
@@ -10,60 +9,60 @@ namespace Lab5Games.Schedules
     {
         private static ScheduleSystem m_instance = null;
 
-        internal static ScheduleSystem GetInstance()
+        static ScheduleSystem current
         {
-            if(m_instance == null)
+            get
             {
-                m_instance = FindObjectOfType<ScheduleSystem>();
-
-
-                if(m_instance == null)
-                {
-                    GameObject go = new GameObject("[ScheduleSystem]");
-                    DontDestroyOnLoad(go);
-                    
-                    m_instance = go.AddComponent<ScheduleSystem>();
-
-                    Debug.LogWarning("[ScheduleSystem] The system has been created automatically");
-                }
-
                 if (m_instance == null)
                 {
-                    Debug.LogError("[ScheduleSystem] Failed to create the system");
-                }
-            }
+                    m_instance = FindObjectOfType<ScheduleSystem>();
 
-            return m_instance;
+                    if (m_instance == null)
+                    {
+                        GameObject go = new GameObject("[ScheduleSystem]");
+                        m_instance = go.AddComponent<ScheduleSystem>();
+
+                        Debug.LogWarning("[ScheduleSystem] The system has been created automatically");
+                    }
+
+                    if (m_instance == null)
+                    {
+                        throw new Exception("[ScheduleSystem] Failed to create the system");
+                    }
+                }
+
+                return m_instance;
+            }
         }
 
         public static void CancelScheduleAll()
         {
-            GetInstance()?.CancelScheduleAll_Internal();
+            current?.CancelScheduleAll_Internal();
         }
 
         public static bool RegisterSchedule(Schedule schedule)
         {
-            return (GetInstance()?.RegisterSchedule_Internal(schedule)).Value;
+            return (current?.RegisterSchedule_Internal(schedule)).Value;
         }
 
         public static Coroutine ProxyStartCoroutine(IEnumerator routine)
         {
-            return GetInstance()?.StartCoroutine_Internal(routine);
+            return current?.StartCoroutine_Internal(routine);
         }
 
         public static void ProxyStopCoroutine(Coroutine routine)
         {
-            GetInstance()?.StopCoroutine_Internal(routine);
+            current?.StopCoroutine_Internal(routine);
         }
 
         public static void RegisterTickModule(ITickModule module)
         {
-            GetInstance()?.RegisterTickModule_Internal(module);
+            current?.RegisterTickModule_Internal(module);
         }
 
         public static void UnregisterTickModule(ITickModule module)
         {
-            GetInstance().UnregisterTickModule_Internal(module);
+            current?.UnregisterTickModule_Internal(module);
         }
 
         float m_deltaTime;
@@ -114,6 +113,11 @@ namespace Lab5Games.Schedules
         private void UnregisterTickModule_Internal(ITickModule module)
         {
             m_tickModules.Remove(module);
+        }
+
+        private void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
         }
 
         private void OnDestroy()

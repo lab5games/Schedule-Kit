@@ -22,7 +22,7 @@ namespace Lab5Games.Schedules
         public event ScheduleDelegate onCancel;
 
 
-        public virtual void Start()
+        public void Start()
         {
             if(state != States.NotStarted)
             {
@@ -32,12 +32,15 @@ namespace Lab5Games.Schedules
             if (ScheduleSystem.RegisterSchedule(this))
             {
                 state = States.InProgress;
+                OnStart();
             }
             else
             {
                 throw new System.Exception("Failed to start the schedule");
             }
         }
+
+        protected virtual void OnStart() { }
 
         public virtual void Complete()
         {
