@@ -1,7 +1,7 @@
 {
-    "name": "com.lab5games.schedules",
-    "version": "1.0.5",
-    "displayName": "Schedule System",
+    "name": "com.lab5games.schedulekit",
+    "version": "1.0.6",
+    "displayName": "Schedule Kit",
     "unity": "2021.3",
 
     "dependencies": 
