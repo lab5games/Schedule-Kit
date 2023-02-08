@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Experimental.AI;
 
 namespace Lab5Games.ScheduleKit
 {
-    public class CoroutineSchedule : Schedule, IAwaiter, IAwaitable<CoroutineSchedule>
+    public class CoroutineSchedule : Schedule
     {
         public static CoroutineSchedule Create(IEnumerator routine, bool autoStart = true)
         {
@@ -74,23 +73,6 @@ namespace Lab5Games.ScheduleKit
             }
 
             state = States.Completed;
-        }
-
-        public bool IsCompleted => state == States.Completed || state == States.Canceled;
-
-        public void GetResult()
-        {
-        }
-
-        public void OnCompleted(Action continuation)
-        {
-            onCancel += (x) => { continuation(); };
-            onComplete += (x) => { continuation(); };
-        }
-
-        public CoroutineSchedule GetAwaiter()
-        {
-            return this;
         }
     }
 }

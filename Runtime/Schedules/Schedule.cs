@@ -1,3 +1,4 @@
+using System;
 
 namespace Lab5Games.ScheduleKit
 {
@@ -10,8 +11,6 @@ namespace Lab5Games.ScheduleKit
             Completed,
             Canceled
         }
-
-        
 
         public States state { get; protected set; } = States.NotStarted;
 
@@ -73,5 +72,27 @@ namespace Lab5Games.ScheduleKit
         }
 
         public virtual void Tick(float deltaTime) { }
+    }
+
+    public class ScheduleTask : IAwaiter<Schedule>, IAwaitable<ScheduleTask, Schedule>
+    {
+        Schedule m_Schedule;
+
+        public ScheduleTask(Schedule schedule)
+        {
+            m_Schedule = schedule;
+        }
+
+        public bool IsCompleted => m_Schedule.state == Schedule.States.Completed || m_Schedule.state == Schedule.States.Canceled;
+
+        public Schedule GetResult() => m_Schedule;
+
+        public void OnCompleted(Action continuation)
+        {
+            m_Schedule.onComplete += x => continuation();
+            m_Schedule.onCancel += x => continuation();
+        }
+
+        public ScheduleTask GetAwaiter() => this;
     }
 }

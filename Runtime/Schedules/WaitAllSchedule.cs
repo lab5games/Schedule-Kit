@@ -2,7 +2,7 @@ using System;
 
 namespace Lab5Games.ScheduleKit
 {
-    public class WaitAllSchedule : Schedule, IAwaiter, IAwaitable<WaitAllSchedule>
+    public class WaitAllSchedule : Schedule
     {
         public static WaitAllSchedule Create(Schedule[] schedules, bool autoStart = true)
         {
@@ -17,7 +17,17 @@ namespace Lab5Games.ScheduleKit
 
         Schedule[] m_Schedules;
 
-        public bool IsCompleted => state == States.Completed || state == States.Canceled;
+        private ScheduleTask m_Task;
+        public ScheduleTask Task
+        {
+            get
+            {
+                if (m_Task == null)
+                    m_Task = new ScheduleTask(this);
+
+                return m_Task;
+            }
+        }
 
         private WaitAllSchedule(Schedule[] schedules)
         {
@@ -55,20 +65,6 @@ namespace Lab5Games.ScheduleKit
                 if (schedule.state == States.InProgress)
                     schedule.Cancel();
             }
-        }
-
-        public void GetResult()
-        {
-        }
-
-        public void OnCompleted(Action continuation)
-        {
-            onComplete += x => continuation();
-        }
-
-        public WaitAllSchedule GetAwaiter()
-        {
-            return this;
         }
     }
 }
