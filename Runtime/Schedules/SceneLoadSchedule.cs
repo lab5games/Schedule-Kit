@@ -6,9 +6,9 @@ namespace Lab5Games.ScheduleKit
 {
     public class SceneLoadSchedule : Schedule, IAwaiter, IAwaitable<SceneLoadSchedule>
     {
-        public static SceneLoadSchedule Create(string sceneName, LoadSceneMode loadMode, bool autoStart = true)
+        public static SceneLoadSchedule Create(string sceneName, bool isAdditive, bool autoStart = true)
         {
-            SceneLoadSchedule schedule = new SceneLoadSchedule(sceneName, loadMode);
+            SceneLoadSchedule schedule = new SceneLoadSchedule(sceneName, isAdditive ? LoadSceneMode.Additive : LoadSceneMode.Single);
 
             if(autoStart)
                 schedule.Start();
