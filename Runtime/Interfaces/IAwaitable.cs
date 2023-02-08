@@ -1,5 +1,5 @@
 
-namespace Lab5Games.Schedules
+namespace Lab5Games.ScheduleKit
 {
     public interface IAwaitable<TAwaiter> where TAwaiter : IAwaiter
     {

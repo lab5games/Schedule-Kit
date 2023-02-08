@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Lab5Games.Schedules
+namespace Lab5Games.ScheduleKit
 {
     public class ScheduleSystem : MonoBehaviour
     {
@@ -55,19 +55,8 @@ namespace Lab5Games.Schedules
             current?.StopCoroutine_Internal(routine);
         }
 
-        public static void RegisterTickModule(ITickModule module)
-        {
-            current?.RegisterTickModule_Internal(module);
-        }
-
-        public static void UnregisterTickModule(ITickModule module)
-        {
-            current?.UnregisterTickModule_Internal(module);
-        }
-
         float m_deltaTime;
         List<Schedule> m_schedules = new List<Schedule>();
-        List<ITickModule> m_tickModules = new List<ITickModule>();
 
         private void CancelScheduleAll_Internal()
         {
@@ -102,17 +91,6 @@ namespace Lab5Games.Schedules
         private void StopCoroutine_Internal(Coroutine routine)
         {
             StopCoroutine(routine);
-        }
-
-        private void RegisterTickModule_Internal(ITickModule module)
-        {
-            m_tickModules.Add(module);
-            m_tickModules.Sort((a, b) => a.order.CompareTo(b.order));
-        }
-
-        private void UnregisterTickModule_Internal(ITickModule module)
-        {
-            m_tickModules.Remove(module);
         }
 
         private void Awake()
@@ -154,11 +132,6 @@ namespace Lab5Games.Schedules
                         m_schedules.RemoveAt(i);
                         break;
                 }
-            }
-
-            for(int i=0; i<m_tickModules.Count; i++)
-            {
-                m_tickModules[i].Tick(m_deltaTime);
             }
         }
 

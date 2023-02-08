@@ -1,5 +1,5 @@
 
-namespace Lab5Games.Schedules
+namespace Lab5Games.ScheduleKit
 {
     public abstract class Schedule 
     {
@@ -31,8 +31,8 @@ namespace Lab5Games.Schedules
 
             if (ScheduleSystem.RegisterSchedule(this))
             {
-                state = States.InProgress;
                 OnStart();
+                state = States.InProgress;
             }
             else
             {

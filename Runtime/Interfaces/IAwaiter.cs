@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Lab5Games.Schedules
+namespace Lab5Games.ScheduleKit
 {
     public interface IAwaiter : INotifyCompletion
     {

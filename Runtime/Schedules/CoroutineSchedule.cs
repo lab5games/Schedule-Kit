@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Experimental.AI;
 
-namespace Lab5Games.Schedules
+namespace Lab5Games.ScheduleKit
 {
     public class CoroutineSchedule : Schedule, IAwaiter, IAwaitable<CoroutineSchedule>
     {
@@ -36,7 +36,7 @@ namespace Lab5Games.Schedules
 
         public override void Complete()
         {
-            Debug.LogWarning("[CoroutineSchedule] This operation is invalid!");
+            Debug.LogWarning("[CoroutineSchedule] The operation is invalid!");
         }
 
         public override void Cancel()

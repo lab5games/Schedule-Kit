@@ -1,6 +1,6 @@
 using System;
 
-namespace Lab5Games.Schedules
+namespace Lab5Games.ScheduleKit
 {
     public class WaitAllSchedule : Schedule, IAwaiter, IAwaitable<WaitAllSchedule>
     {
