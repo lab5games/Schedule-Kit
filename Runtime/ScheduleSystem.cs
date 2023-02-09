@@ -24,11 +24,6 @@ namespace Lab5Games.ScheduleKit
 
                         Debug.LogWarning("[ScheduleSystem] The system has been created automatically");
                     }
-
-                    if (m_instance == null)
-                    {
-                        throw new Exception("[ScheduleSystem] Failed to create the system");
-                    }
                 }
 
                 return m_instance;
