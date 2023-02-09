@@ -2,7 +2,7 @@
 
 namespace Lab5Games.ScheduleKit
 {
-    public class TimeSchedule : Schedule
+    public class TimeSchedule : Schedule, IAwaiter<ScheduleReport>, IAwaitable<TimeSchedule, ScheduleReport>
     {
         public static TimeSchedule Create(float seconds, bool autoStart = true)
         {
@@ -17,18 +17,6 @@ namespace Lab5Games.ScheduleKit
         float m_time;
         public float remainingTime => m_time;
 
-        private ScheduleTask m_Task;
-        public ScheduleTask Task
-        {
-            get
-            {
-                if (m_Task == null)
-                    m_Task = new ScheduleTask(this);
-
-                return m_Task;
-            }
-        }
-
         private TimeSchedule(float time)
         {
             m_time = time;
@@ -40,6 +28,24 @@ namespace Lab5Games.ScheduleKit
 
             if (m_time <= 0)
                 Complete();
+        }
+
+        public bool IsCompleted => state == States.Canceled || state == States.Completed;
+
+        public ScheduleReport GetResult()
+        {
+            return new ScheduleReport(this);
+        }
+
+        public void OnCompleted(Action continuation)
+        {
+            onCancel += x => continuation();
+            onComplete += x => continuation();
+        }
+
+        public TimeSchedule GetAwaiter()
+        {
+            return this;
         }
     }
 }

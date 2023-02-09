@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace Lab5Games.ScheduleKit
 {
-    public class SceneLoadSchedule : Schedule
+    public class SceneLoadSchedule : Schedule, IAwaiter<SceneLoadScheduleReport>, IAwaitable<SceneLoadSchedule, SceneLoadScheduleReport>
     {
         public static SceneLoadSchedule Create(string sceneName, bool isAdditive, bool autoStart = true)
         {
@@ -21,18 +21,6 @@ namespace Lab5Games.ScheduleKit
 
         string m_LoadSceneName;
         public string sceneName => m_LoadSceneName;
-
-        private ScheduleTask m_Task;
-        public ScheduleTask Task
-        {
-            get
-            {
-                if (m_Task == null)
-                    m_Task = new ScheduleTask(this);
-
-                return m_Task;
-            }
-        }
 
         public bool isLoaded => state == States.Completed;
         
@@ -87,6 +75,23 @@ namespace Lab5Games.ScheduleKit
         public override void Cancel()
         {
             Debug.LogWarning("[SceneLoadSchedule] The operation is invalid!");
+        }
+
+        public bool IsCompleted => state == States.Completed;
+
+        public SceneLoadScheduleReport GetResult()
+        {
+            return new SceneLoadScheduleReport(this);
+        }
+
+        public void OnCompleted(Action continuation)
+        {
+            onComplete += x => continuation();
+        }
+
+        public SceneLoadSchedule GetAwaiter()
+        {
+            return this;
         }
     }
 }
